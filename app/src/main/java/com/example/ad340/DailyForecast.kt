@@ -1,4 +1,7 @@
 package com.example.ad340
 
-class DailyForcast {
-}
+data class DailyForecast (
+    val temp :Float,
+    val description : String
+
+)
