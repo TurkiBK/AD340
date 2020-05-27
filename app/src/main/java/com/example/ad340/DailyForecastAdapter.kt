@@ -7,16 +7,22 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import java.security.PrivateKey
 
 
-class DailyForecastViewHolder(view: View) : RecyclerView.ViewHolder(view){
+class DailyForecastViewHolder(
+    view: View,
+    private val tempDisplaySettingManager: TempDisplaySettingManager
+    )
+    : RecyclerView.ViewHolder(view){
+
 
     private val  tempText : TextView = view.findViewById(R.id.tempText)
     private val descriptionText : TextView=view.findViewById(R.id.descriptionText)
 
     fun bind(dailyForecast: DailyForecast){  // bind method connect individual daily forecastItem to views
         // tempText.text = dailyForecast.temp.toString() // getting temp value and convert it to string, we change it to the bottom line format
-        tempText.text = String.format("%.2f", dailyForecast.temp) // "%.2f" to convert temp to the 2 dismal ot hundret .
+        tempText.text = formatForDisplay(dailyForecast.temp,tempDisplaySettingManager.getTempDisplaySetting())
         descriptionText.text=dailyForecast.description
 
     }
@@ -24,9 +30,12 @@ class DailyForecastViewHolder(view: View) : RecyclerView.ViewHolder(view){
 }
 
 class DailyForecastAdapter(
+   private val tempDisplaySettingManager: TempDisplaySettingManager,
     private val clickHandler: (DailyForecast)-> Unit
 
 ) : ListAdapter <DailyForecast,DailyForecastViewHolder>(DIFF_CONFIG){
+
+
 
     companion object{
 
@@ -56,7 +65,7 @@ class DailyForecastAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyForecastViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_daily_forecast , parent,false)
-        return DailyForecastViewHolder(itemView)
+        return DailyForecastViewHolder(itemView, tempDisplaySettingManager)
     }
 
     override fun onBindViewHolder(holder: DailyForecastViewHolder, position: Int) {

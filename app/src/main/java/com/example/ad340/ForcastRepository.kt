@@ -26,7 +26,7 @@ class ForecastRepository {
                         in Float.MIN_VALUE.rangeTo(0f)-> "anythimg below 0dosen't make sense"
                         in 0f.rangeTo(32f)->"Way too cold"
                         in 32f.rangeTo(55f)->"colder tha I woild prefer"
-                        in 55f.rangeTo(git st65f)->"Getting better"
+                        in 55f.rangeTo(65f)->"Getting better"
                         in 65f.rangeTo(80f)->"That's the sweet spot!"
                         in 80f.rangeTo(90f)->"Getting a littelwarm"
                         in 90f.rangeTo(100f)->"Where is the A/c?"
