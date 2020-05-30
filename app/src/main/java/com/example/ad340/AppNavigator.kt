@@ -1,4 +1,6 @@
 package com.example.ad340
 
-interface AppNavigatar {
+interface AppNavigator {
+fun navigateToCurrentForecast(zipcode : String)
+fun navigateToLocationEntry()
 }
