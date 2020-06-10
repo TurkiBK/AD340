@@ -19,10 +19,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  /**
  * A simple [Fragment] subclass.
  */
-class CurrentForecastFragment : Fragment() {
+class WeeklyForecastFragment : Fragment() {
 
      private lateinit var tempDisplaySettingManager: TempDisplaySettingManager
      private  val forecastRepository = ForecastRepository()
+
 
 
     override fun onCreateView(
@@ -35,7 +36,7 @@ class CurrentForecastFragment : Fragment() {
 
 
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_current_forcast, container, false)
+        val view = inflater.inflate(R.layout.fragment_weekly_forcast, container, false)
 
         val zipcode = arguments?.getString(KEY_Zipcode) ?: ""
 
@@ -63,24 +64,28 @@ class CurrentForecastFragment : Fragment() {
 
         forecastRepository.loadForecast(zipcode)
 
+
         return view
     }
 
-   private fun showLocationEntry(){
-       val action =CurrentForecastFragmentDirections.actionCurrentForecastFragmentToLocationEntryFragment()
-       findNavController().navigate(action)
-
-   }
-     private fun showForecastDetails(forecast: DailyForecast){
-         val action= CurrentForecastFragmentDirections.actionCurrentForecastFragmentToForecastDetailsFragment(forecast.temp,forecast.description)
+     private fun showLocationEntry(){
+         val action = WeeklyForecastFragmentDirections.actionWeeklyForecastFragmentToLocationEntryFragment()
          findNavController().navigate(action)
+
+
+     }
+     private fun showForecastDetails(forecast: DailyForecast){
+
+      val action = WeeklyForecastFragmentDirections.actionWeeklyForecastFragmentToForecastDetailsFragment((forecast.temp, forecast.description))
+        findNavController().navigate(action)
+
      }
 
      companion object{
          const val KEY_Zipcode ="key_zipcode"
 
-         fun newInstance(zipcode: String) :CurrentForecastFragment{
-             val fragment = CurrentForecastFragment()
+         fun newInstance(zipcode: String) :WeeklyForecastFragment{
+             val fragment = WeeklyForecastFragment()
 
              val  args =  Bundle()
              args.putString(KEY_Zipcode, zipcode)

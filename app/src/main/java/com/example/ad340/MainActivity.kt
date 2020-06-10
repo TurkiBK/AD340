@@ -1,25 +1,22 @@
 package com.example.ad340
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
-//import androidx.appcompat.app.
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.ad340.details.ForecastDetailsActivity
-import com.example.ad340.forecast.CurrentForecastFragment
-import com.example.ad340.location.LocationEntryFragment
-import java.util.*
-
-class MainActivity : AppCompatActivity() ,AppNavigator{
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import com.example.ad340.forecast.CurrentForecastFragmentDirections
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
 
 
-   private lateinit var tempDisplaySettingManager: TempDisplaySettingManager
+class MainActivity : AppCompatActivity() {
+
+
+    private lateinit var tempDisplaySettingManager: TempDisplaySettingManager
 
 
     // region Set up Metods
@@ -27,30 +24,37 @@ class MainActivity : AppCompatActivity() ,AppNavigator{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-    tempDisplaySettingManager = TempDisplaySettingManager(this)
+        tempDisplaySettingManager = TempDisplaySettingManager(this)
 
 
-        supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragmentContainer,LocationEntryFragment())
-            .commit()
+        val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration: AppBarConfiguration = AppBarConfiguration(navController.graph)
+        findViewById<Toolbar>(R.id.toolbar).setTitle(R.string.app_name)
+        findViewById<BottomNavigationItemView>(R.id.bottomNavigationView).setupWithNavController(navController)
+
+
+        // supportFragmentManager// has to be moved
     }
 
-    override fun navigateToCurrentForecast(zipcode: String) {
-             supportFragmentManager
-             .beginTransaction()
-             .replace(R.id.fragmentContainer,CurrentForecastFragment.newInstance(zipcode))
-             .commit()
-
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.setting_menu, menu)
+        return true
     }
 
-    override fun navigateToLocationEntry() {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
 
-            supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentContainer,LocationEntryFragment())
-            .commit()
+            R.id.tempDispalySetting -> {
+                showTempDisplaySettingDialog(this, tempDisplaySettingManager)
+                true
+
+            }
+
+            else -> super.onOptionsItemSelected(item)
+
+        }
     }
 }
-
 

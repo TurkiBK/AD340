@@ -20,7 +20,7 @@ class TempDisplaySettingManager(context: Context){
 
             fun getTempDisplaySetting (): TempDisplaySetting{
 
-                val foo :String? =null
+               // val foo :String? =null
 
             val settingValue = preferences.getString("key_temp_display", TempDisplaySetting.Fahrenheit.name)?:TempDisplaySetting.Fahrenheit.name
             return TempDisplaySetting.valueOf(settingValue)
