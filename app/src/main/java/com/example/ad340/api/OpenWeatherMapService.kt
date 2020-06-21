@@ -20,19 +20,18 @@ fun createOpenWeatherMapService(): OpenWeatherMapService{
 interface OpenWeatherMapService {
         @GET("/data/2.5/weather")
         fun currentWeather(
-                @Query("zip") zipcode: String,
+                @Query("zip")   zipcode: String,
                 @Query("units") units:String,
                 @Query("appid") apikey: String
         ): Call<CurrentWeather>
 
-        @GET("/date/2.5/oncall")
+        @GET("/data/2.5/onecall")
         fun sevenDayForecast(
-                @Query("lat")lat :Float,
-                @Query("lon")lon: Float,
-                @Query("exclude")exclude: String,
-                @Query("units") units:String,
-                @Query("appid") apikey: String
-
+            @Query("lat")lat :Float,
+            @Query("lon")lon: Float,
+            @Query("exclude")exclude: String,
+            @Query("units") units:String,
+            @Query("appid") apikey: String
 
         ):Call<WeeklyForecast>
 }

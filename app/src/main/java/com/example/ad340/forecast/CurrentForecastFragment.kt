@@ -1,3 +1,4 @@
+
  package com.example.ad340.forecast
 
 import android.os.Bundle
@@ -32,7 +33,7 @@ class CurrentForecastFragment : Fragment() {
         val locationName:TextView =view.findViewById(R.id.locationName)
         val  tempText: TextView = view.findViewById(R.id.tempText)
 
-        val zipcode = arguments?.getString(KEY_Zipcode) ?: ""
+       // val zipcode = arguments?.getString(KEY_Zipcode) ?: ""
 
         tempDisplaySettingManager = TempDisplaySettingManager(requireContext())
 

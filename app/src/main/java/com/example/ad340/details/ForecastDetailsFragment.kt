@@ -1,15 +1,23 @@
 package com.example.ad340.details
 
 import android.os.Bundle
+import android.provider.Settings.System.DATE_FORMAT
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import coil.api.load
 import com.example.ad340.R
 import com.example.ad340.TempDisplaySettingManager
 import com.example.ad340.formatForDisplay
+import java.text.SimpleDateFormat
+import java.util.*
+
+private val DATE_FORMAT = SimpleDateFormat("MM-dd-yyyy")
+
 
 class ForecastDetailsFragment : Fragment() {
 
@@ -27,14 +35,20 @@ class ForecastDetailsFragment : Fragment() {
 
         tempDisplaySettingManager = TempDisplaySettingManager(requireContext())
 
-        val tempText =layout.findViewById<TextView>(R.id.tempText)
-        val descriptionText =layout.findViewById<TextView>(R.id.descriptionText)
+        val tempText = layout.findViewById<TextView>(R.id.tempText)
+        val descriptionText = layout.findViewById<TextView>(R.id.descriptionText)
+        val dateText = layout.findViewById<TextView>(R.id.dateText)
+        val forecastIcon = layout.findViewById<ImageView>(R.id.forecastIcon)
 
 
         tempText.text = formatForDisplay(args.temp,tempDisplaySettingManager.getTempDisplaySetting())
         descriptionText.text = args.description
 
+        dateText.text = DATE_FORMAT.format(Date(args.date * 1000))
+        forecastIcon.load("http://openweathermap.org/img/wn/$${iconId}@2x.png")
+
         return layout
+
     }
 
     }

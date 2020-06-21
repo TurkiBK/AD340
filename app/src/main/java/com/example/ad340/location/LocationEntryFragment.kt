@@ -35,7 +35,7 @@ class LocationEntryFragment : Fragment() {
         enterButton.setOnClickListener {
             val enteredMsg = zipcodeEditText.text.toString()
             if (enteredMsg.length != 5) {
-                Toast.makeText(requireContext(), "Pleas enter vaild zipcode", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Pleas enter valid zipcode", Toast.LENGTH_SHORT).show()
             } else {
                 locationRepository.savedLocation(Location.Zipcode(enteredMsg ))
                 findNavController().navigateUp()

@@ -91,7 +91,7 @@ class WeeklyForecastFragment : Fragment() {
              val fragment = WeeklyForecastFragment()
 
              val  args =  Bundle()
-             args.putString(KEY_Zipcode, zipcode)
+               args.putString(KEY_Zipcode, zipcode)
              fragment.arguments =args
              return fragment
          }

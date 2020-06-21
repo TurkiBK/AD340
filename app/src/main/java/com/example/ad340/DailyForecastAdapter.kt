@@ -27,8 +27,7 @@ class DailyForecastViewHolder(
     private val dateText = view.findViewById<TextView>(R.id.dateText)
     private val forecastIcon = view.findViewById<ImageView>(R.id.forecastIcon)
 
-    fun bind(dailyForecast: DailyForecast){  // bind method connect individual daily forecastItem to views
-        // tempText.text = dailyForecast.temp.toString() // getting temp value and convert it to string, we change it to the bottom line format
+    fun bind(dailyForecast: DailyForecast){
         tempText.text = formatForDisplay(dailyForecast.temp.max,tempDisplaySettingManager.getTempDisplaySetting())
         descriptionText.text = dailyForecast.weather[0].description
         dateText.text = DATE_FORMAT.format(Date(dailyForecast.date * 1000))
@@ -44,47 +43,44 @@ class DailyForecastAdapter(
    private val tempDisplaySettingManager: TempDisplaySettingManager,
     private val clickHandler: (DailyForecast)-> Unit
 
-) : ListAdapter <DailyForecast,DailyForecastViewHolder>(DIFF_CONFIG){
-
-
-
-    companion object{
-
-    val DIFF_CONFIG = object : DiffUtil.ItemCallback<DailyForecast>() {
-        override fun areItemsTheSame(
-            oldItem: DailyForecast,
-            newItem: DailyForecast
-        ): Boolean {
-
-            return oldItem === newItem
-        }
-
-        override fun areContentsTheSame(
-            oldItem: DailyForecast,
-            newItem: DailyForecast
-
-        ): Boolean {
-
-            return oldItem == newItem
-        }
-
-    }
-
-
-
-}
+) : ListAdapter <DailyForecast,DailyForecastViewHolder>(DIFF_CONFIG) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyForecastViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_daily_forecast , parent,false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_daily_forecast, parent, false)
         return DailyForecastViewHolder(itemView, tempDisplaySettingManager)
     }
 
     override fun onBindViewHolder(holder: DailyForecastViewHolder, position: Int) {
         holder.bind(getItem(position))
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             clickHandler(getItem(position))
 
         }
     }
-}
 
+    companion object {
+
+        val DIFF_CONFIG = object : DiffUtil.ItemCallback<DailyForecast>() {
+            override fun areItemsTheSame(
+                oldItem: DailyForecast,
+                newItem: DailyForecast
+            ): Boolean {
+
+                return oldItem === newItem
+            }
+
+            override fun areContentsTheSame(
+                oldItem: DailyForecast,
+                newItem: DailyForecast
+
+            ): Boolean {
+
+                return oldItem == newItem
+            }
+
+        }
+
+
+    }
+}

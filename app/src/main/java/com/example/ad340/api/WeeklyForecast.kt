@@ -7,9 +7,9 @@ data class WeatherDescription(val main: String , val description: String, val ic
 data class Temp(val main: Float, val max: Float )
 
 data class DailyForecast(
-   @field:Json(name= "dt") val date: Long,
+   @field:Json(name = "dt") val date: Long,
     val temp: Temp,
-    val weather:List<WeatherDescription>
+    val weather: List<WeatherDescription>
     )
 
 data class WeeklyForecast(val daily: List<DailyForecast>)

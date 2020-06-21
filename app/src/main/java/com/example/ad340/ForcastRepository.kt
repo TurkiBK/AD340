@@ -23,7 +23,7 @@ class ForecastRepository {
         val call = createOpenWeatherMapService().currentWeather(zipcode,"imperial",BuildConfig.OPEN_WEATHER_MAP_API_KEY)
         call.enqueue(object: Callback<CurrentWeather>{
             override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
-                Log.e(ForecastRepository::class.java.simpleName, "error loading location for forecast",t)
+                Log.e(ForecastRepository::class.java.simpleName, "error loading location for weekly forecast",t)
             }
 
             override fun onResponse(call: Call<CurrentWeather>, response: Response<CurrentWeather>) {
@@ -63,13 +63,13 @@ class ForecastRepository {
                 val call = createOpenWeatherMapService().currentWeather(zipcode, "imperial",BuildConfig.OPEN_WEATHER_MAP_API_KEY)
                 call.enqueue(object: Callback<CurrentWeather>{
                     override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
-                   Log.e(ForecastRepository::class.java.simpleName, "error loading weather",t)
+                   Log.e(ForecastRepository::class.java.simpleName, "error loading current weather",t)
                     }
 
                     override fun onResponse(call: Call<CurrentWeather>, response: Response<CurrentWeather>) {
                         val weatherResponse =response.body()
                         if(weatherResponse != null){
-                            _currentWeather.value =weatherResponse
+                            _currentWeather.value = weatherResponse
 
 
                         }
