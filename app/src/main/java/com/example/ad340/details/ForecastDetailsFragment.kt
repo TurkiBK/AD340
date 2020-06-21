@@ -61,8 +61,8 @@ class ForecastDetailsFragment : Fragment() {
             // update the UI
             binding.tempText.text = formatForDisplay(viewState.temp, tempDisplaySettingManager.getTempDisplaySetting())
             binding.descriptionText.text = viewState.description
-            binding.dataText.text= viewState.date
-            binding.forcastIcon.loud(viewState.iconUrl)
+            binding.dateText.text= viewState.date
+            binding.forecastIcon.loud(viewState.iconUrl)
         }
         viewModel.viewState.observe(viewLifecycleOwner,viewStateObserver)
     }
