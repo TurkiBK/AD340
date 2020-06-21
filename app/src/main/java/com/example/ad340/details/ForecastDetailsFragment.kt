@@ -1,27 +1,44 @@
 package com.example.ad340.details
 
 import android.os.Bundle
-import android.provider.Settings.System.DATE_FORMAT
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import coil.api.load
 import com.example.ad340.R
 import com.example.ad340.TempDisplaySettingManager
+import com.example.ad340.api.Forecast
+import com.example.ad340.databinding.FragmentForecastDetailsBinding
 import com.example.ad340.formatForDisplay
+import kotlinx.android.synthetic.main.item_daily_forecast.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-private val DATE_FORMAT = SimpleDateFormat("MM-dd-yyyy")
+
 
 
 class ForecastDetailsFragment : Fragment() {
 
     private val args: ForecastDetailsFragmentArgs by navArgs()
+
+    private lateinit var viewModelFactory: ForecastDetailsViewModelFactory
+    private val viewModel: ForecastDetailsViewModel by viewModels(
+        factoryProducer = {viewModelFactory}
+
+    )
+
+    private var _binding: FragmentForecastDetailsBinding? = null
+
+    // This property onley valid between onCreateView and onDestroyView
+    private val binding get() = _binding!!
+
     private lateinit var tempDisplaySettingManager: TempDisplaySettingManager
 
 
@@ -31,24 +48,29 @@ class ForecastDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val layout=  inflater.inflate(R.layout.fragment_forecast_details, container,false)
-
+        _binding = FragmentForecastDetailsBinding.inflate(inflater, container, false)
+        viewModelFactory = ForecastDetailsViewModelFactory(args)
         tempDisplaySettingManager = TempDisplaySettingManager(requireContext())
+        return binding.root
 
-        val tempText = layout.findViewById<TextView>(R.id.tempText)
-        val descriptionText = layout.findViewById<TextView>(R.id.descriptionText)
-        val dateText = layout.findViewById<TextView>(R.id.dateText)
-        val forecastIcon = layout.findViewById<ImageView>(R.id.forecastIcon)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val viewStateObserver = Observer<ForecastDetailsViewState> {viewState ->
+            // update the UI
+            binding.tempText.text = formatForDisplay(viewState.temp, tempDisplaySettingManager.getTempDisplaySetting())
+            binding.descriptionText.text = viewState.description
+            binding.dataText.text= viewState.date
+            binding.forcastIcon.loud(viewState.iconUrl)
+        }
+        viewModel.viewState.observe(viewLifecycleOwner,viewStateObserver)
+    }
 
 
-        tempText.text = formatForDisplay(args.temp,tempDisplaySettingManager.getTempDisplaySetting())
-        descriptionText.text = args.description
-
-        dateText.text = DATE_FORMAT.format(Date(args.date * 1000))
-        forecastIcon.load("http://openweathermap.org/img/wn/$${iconId}@2x.png")
-
-        return layout
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     }
