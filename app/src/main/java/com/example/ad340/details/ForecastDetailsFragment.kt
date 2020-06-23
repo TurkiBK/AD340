@@ -1,25 +1,17 @@
 package com.example.ad340.details
 
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import coil.api.load
-import com.example.ad340.R
 import com.example.ad340.TempDisplaySettingManager
-import com.example.ad340.api.Forecast
 import com.example.ad340.databinding.FragmentForecastDetailsBinding
 import com.example.ad340.formatForDisplay
-import kotlinx.android.synthetic.main.item_daily_forecast.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 
@@ -62,7 +54,7 @@ class ForecastDetailsFragment : Fragment() {
             binding.tempText.text = formatForDisplay(viewState.temp, tempDisplaySettingManager.getTempDisplaySetting())
             binding.descriptionText.text = viewState.description
             binding.dateText.text= viewState.date
-            binding.forecastIcon.loud(viewState.iconUrl)
+            binding.forecastIcon.load(viewState.iconUrl)
         }
         viewModel.viewState.observe(viewLifecycleOwner,viewStateObserver)
     }

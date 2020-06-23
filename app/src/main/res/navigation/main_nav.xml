@@ -34,6 +34,14 @@
             android:name="description"
             app:argType="string" />
     </fragment>
+
+    <argument
+        android:name="date"
+        app:argType="long" />
+    <argument
+        android:name="icon"
+        app:argType="string" />
+
     <fragment
         android:id="@+id/weeklyForecastFragment"
         android:name="com.example.ad340.forecast.WeeklyForecastFragment"

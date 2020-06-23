@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -32,6 +34,9 @@ class WeeklyForecastFragment : Fragment() {
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_weekly_forcast, container, false)
+        val emptyText = view.findViewById<TextView>(R.id.emptyText)
+        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+
 
         val zipcode = arguments?.getString(KEY_Zipcode) ?: ""
 
@@ -49,6 +54,10 @@ class WeeklyForecastFragment : Fragment() {
 
         // create the observer which update the UI in response to forecast updates
         val weeklyForecastObserver = Observer<WeeklyForecast>{ weeklyForecast ->
+            emptyText.visibility =View.GONE
+            progressBar.visibility = View.GONE
+
+
             // update our list adaptor
             dailyForecastAdapter.submitList(weeklyForecast.daily)
         }
@@ -62,8 +71,14 @@ class WeeklyForecastFragment : Fragment() {
       locationRepository = LocationRepository(requireContext())
         val savedLocationObserver = Observer<Location>{savedLocation ->
             when(savedLocation){
-                is Location.Zipcode -> forecastRepository.loadWeeklyForecast(savedLocation.zipcode)
+                is Location.Zipcode ->{
+                    progressBar.visibility = View.VISIBLE
+
+                    forecastRepository.loadWeeklyForecast(savedLocation.zipcode)
             }
+
+            }
+
         }
         locationRepository.savedLocation.observe(viewLifecycleOwner,savedLocationObserver)
 
